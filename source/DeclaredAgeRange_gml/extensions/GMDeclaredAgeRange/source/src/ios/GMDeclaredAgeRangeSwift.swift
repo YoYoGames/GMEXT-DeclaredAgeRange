@@ -13,10 +13,10 @@ public class GMDeclaredAgeRangeSwift: GMDeclaredAgeRangeInternalSwift
     {
         if #available(iOS 26.2, *)
         {
-            return 1
+            return true
         }
 
-        return 0
+        return false
     }
 
     private var my_callback: GMFunction?
