@@ -10,10 +10,10 @@ open class GMDeclaredAgeRangeInternalSwift
     {
     }
 
-    open func declared_age_range_is_supported() -> Double
+    open func declared_age_range_is_supported() -> Bool
     {
         // default stub for declared_age_range_is_supported
-        return 0
+        return false
     }
 
     open func declared_age_range_request(age_gate_1: Int32, age_gate_2: Int32, age_gate_3: Int32, callback: GMFunction)
@@ -24,7 +24,7 @@ open class GMDeclaredAgeRangeInternalSwift
     public func __EXT_SWIFT__declared_age_range_is_supported() -> Double
     {
         let __result = self.declared_age_range_is_supported()
-        return Double(__result)
+        return __result ? 1.0 : 0.0
     }
 
     public func __EXT_SWIFT__declared_age_range_request(_ __arg_buffer: UnsafeMutablePointer<CChar>?, arg1 __arg_buffer_length: Double) -> Double

@@ -17,7 +17,7 @@ class `[[DeclaredAgeRangeResult]]` prototype Object
 }
 
 [global, bind = typed_gml]
-function declared_age_range_is_supported(): real;
+function declared_age_range_is_supported(): bool;
 
 [global, bind = typed_gml]
 function declared_age_range_request(

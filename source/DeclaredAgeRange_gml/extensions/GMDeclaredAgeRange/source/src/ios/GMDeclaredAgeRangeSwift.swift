@@ -9,7 +9,7 @@ public class GMDeclaredAgeRangeSwift: GMDeclaredAgeRangeInternalSwift
         super.init()
     }
 
-    public override func declared_age_range_is_supported() -> Double
+    public override func declared_age_range_is_supported() -> Bool
     {
         if #available(iOS 26.2, *)
         {

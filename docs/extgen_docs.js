@@ -1,6 +1,6 @@
 /**
  * @function_partial declared_age_range_is_supported
- * @returns {Real} 
+ * @returns {Bool} 
  * @function_end 
  */
 
