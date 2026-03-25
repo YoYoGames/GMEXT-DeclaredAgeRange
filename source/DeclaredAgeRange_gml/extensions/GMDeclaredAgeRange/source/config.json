@@ -1,0 +1,25 @@
+{
+  "$schema": "./extgen.schema.json",
+  "input": "spec.gmidl",
+  "root": "./",
+  "gamemaker": {
+    "wrappers": {
+      "outputFile": "../../../scripts/GMDeclaredAgeRange_API/GMDeclaredAgeRange_API.gml"
+    },
+    "extension": {
+      "mode": "patch",
+      "outputFile": "../../../extensions/GMDeclaredAgeRange/GMDeclaredAgeRange.yy"
+    },
+    "injectors": { }
+  },
+  "targets": {
+    "ios":{
+      "mode": "swift"
+    }
+  },
+  "extras": {
+    "docs": { 
+      "outputFile": "../../../../../docs/extgen_docs.js"
+    }
+  }
+}

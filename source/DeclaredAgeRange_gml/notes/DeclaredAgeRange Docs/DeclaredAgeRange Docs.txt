@@ -1,0 +1,181 @@
+# Declared Age Range - GameMaker Extension Documentation
+
+## Overview
+
+This extension integrates Apple's Declared Age Range API (iOS 26.2+) into GameMaker.
+
+It allows retrieving a user's age range and how that age was verified.
+
+---
+
+## Core Functions
+
+## play_age_signals_is_supported()
+
+Returns whether the Declared Age Range API is available on the current device.
+
+Returns:
+
+* true  → Supported (iOS 26.2+)
+* false → Not supported
+
+---
+
+## declared_age_range_request(age_gate_1, age_gate_2, age_gate_3, callback)
+
+Requests the user's age range using up to 3 age thresholds.
+
+Parameters:
+
+* age_gate_1 (int) → REQUIRED
+* age_gate_2 (int) → OPTIONAL (use -1 to ignore)
+* age_gate_3 (int) → OPTIONAL (use -1 to ignore)
+* callback (function) → Receives result struct
+
+Examples:
+
+* (13, 16, 18)
+* (13, 16, -1)
+* (13, -1, -1)
+
+Notes:
+
+* Thresholds define age segmentation
+* Negative values are treated as nil (not used)
+
+---
+
+## Callback Result (Struct)
+
+The callback receives a struct:
+
+{
+success: bool,
+age_lower: real,
+age_upper: real,
+declaration: DeclaredAgeRangeDeclaration,
+error: string
+}
+
+Fields:
+
+## success
+
+* true  → Request succeeded
+* false → Error occurred
+
+## age_lower / age_upper
+
+* Defines the detected age range
+* -1 if unavailable
+
+## declaration
+
+* Indicates how the age was verified
+
+## error
+
+* Error message if success == false
+
+---
+
+## Enum: DeclaredAgeRangeDeclaration
+
+Represents how the user's age was obtained or verified.
+
+Values:
+
+Unknown = 0
+No information available
+
+SelfDeclared = 1
+User manually declared their age
+
+GuardianDeclared = 2
+Parent/guardian declared the age
+
+CheckedByOtherMethod = 3
+Verified by system method
+
+GuardianCheckedByOtherMethod = 4
+Verified by guardian via system method
+
+GovernmentIDChecked = 5
+Verified using government ID
+
+GuardianGovernmentIDChecked = 6
+Guardian verified using government ID
+
+PaymentChecked = 7
+Verified using payment method
+
+GuardianPaymentChecked = 8
+Guardian verified using payment method
+
+---
+
+## Example Usage (GML)
+
+if (!declared_age_range_is_supported())
+{
+show_message_async("DeclaredAgeRange Unsupported");
+exit;
+}
+
+declared_age_range_request(13, 16, 18, function(data)
+{
+if (!data.success)
+{
+show_debug_message("Error: " + data.error);
+return;
+}
+
+```
+show_debug_message("Age: " + string(data.age_lower) + " - " + string(data.age_upper));
+
+switch (data.declaration)
+{
+    case DeclaredAgeRangeDeclaration.SelfDeclared:
+        show_debug_message("User declared");
+    break;
+
+    case DeclaredAgeRangeDeclaration.GovernmentIDChecked:
+        show_debug_message("High trust (ID verified)");
+    break;
+
+    default:
+        show_debug_message("Other verification: " + string(data.declaration));
+    break;
+}
+```
+
+});
+
+---
+
+## Behavior Notes
+
+* API requires iOS 26.2+
+* Requires active UIViewController
+* Uses async Task internally
+* Callback always returns a struct (never raw args)
+
+---
+
+## Testing Notes
+
+* Works only on supported devices / environments
+* Simulator may not provide real data
+* Use logging to inspect declaration values
+
+---
+
+## Design Notes
+
+* Enum is 1:1 mapped to Apple API
+* Unknown handles future Apple enum cases safely
+* Negative thresholds allow flexible API usage
+
+---
+
+## End of File

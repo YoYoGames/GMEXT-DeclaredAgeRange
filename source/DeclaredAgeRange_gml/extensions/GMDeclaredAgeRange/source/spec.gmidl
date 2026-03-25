@@ -1,0 +1,42 @@
+[gml_api]
+module GMDeclaredAgeRange;
+
+[global, bind = typed_gml]
+class `[[DeclaredAgeRangeResult]]` prototype Object
+{
+	[field]
+    property success: bool { get; set; }
+	[field]
+    property age_lower: real { get; set; }
+	[field]
+    property age_upper: real { get; set; }
+	[field,type_hint=`DeclaredAgeRangeDeclaration`]
+    property declaration: gmval { get; set; }
+	[field]
+    property error: string { get; set; }
+}
+
+[global, bind = typed_gml]
+function declared_age_range_is_supported(): real;
+
+[global, bind = typed_gml]
+function declared_age_range_request(
+    age_gate_1: int32,
+    age_gate_2: int32,
+    age_gate_3: int32,
+    callback: func
+): unit;
+
+[global, bind = typed_gml]
+enum DeclaredAgeRangeDeclaration:uint32
+{
+    Unknown = 0,
+    SelfDeclared = 1,
+    GuardianDeclared = 2,
+    CheckedByOtherMethod = 3,
+    GuardianCheckedByOtherMethod = 4,
+    GovernmentIDChecked = 5,
+    GuardianGovernmentIDChecked = 6,
+    PaymentChecked = 7,
+    GuardianPaymentChecked = 8
+}

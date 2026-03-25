@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMDeclaredAgeRange_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMDeclaredAgeRange_API",
+  "parent":{
+    "name":"DeclaredAgeRange",
+    "path":"folders/DeclaredAgeRange.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
