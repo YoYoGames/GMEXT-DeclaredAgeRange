@@ -138,9 +138,9 @@
  * 
  * ---
  * 
- * @param {Real} age_gate_1 REQUIRED (must be >= 0)
- * @param {Real} age_gate_2 OPTIONAL (use -1 to ignore)
- * @param {Real} age_gate_3 OPTIONAL (use -1 to ignore)
+ * @param {Real} age_gate_1 The primary age threshold (must be >= 0). Defines the minimum boundary for age segmentation.
+ * @param {Real} age_gate_2 Secondary threshold used to further divide the age range. Must be greater than or equal to `age_gate_1`, or `-1` to omit.
+ * @param {Real} age_gate_3 Tertiary threshold for additional segmentation. Must be greater than or equal to `age_gate_2` (if provided), or `-1` to omit.
  * @param {Function} callback Receives ${struct.DeclaredAgeRangeResult}
  * 
  * @event callback
