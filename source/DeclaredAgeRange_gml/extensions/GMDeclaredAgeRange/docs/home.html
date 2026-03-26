@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Declared Age Range Extension - GMEXT-DeclaredAgeRange</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Declared Age Range Extension";
+        var mkdocs_page_input_path = "home.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-DeclaredAgeRange
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Declared Age Range Extension</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#structs">Structs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#constants">Constants</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-DeclaredAgeRange</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Declared Age Range Extension</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-DeclaredAgeRange/edit/master/docs/home.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="declared-age-range-extension"><strong>Declared Age Range Extension</strong></h1>
+<p>Welcome to the Declared Age Range extension wiki!</p>
+<p>Declared Age Range is a GameMaker extension that wraps Apple's
+DeclaredAgeRange framework on iOS.</p>
+<p>The extension presents the system age range sheet and returns an
+age range result describing the user's declared age bracket, along
+with the declaration method reported by the platform.</p>
+<p>This is useful for:</p>
+<ul>
+<li>Presenting an Apple-provided age range request flow</li>
+<li>Adapting content to broad age brackets instead of exact age</li>
+<li>Supporting parental or guardian declaration flows when available</li>
+<li>Keeping age checks inside the native platform experience</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>
+<p>This extension is only supported on iOS 26.2 and newer.</p>
+</li>
+<li>
+<p><a href="home.html#declared_age_range_is_supported">declared_age_range_is_supported</a> can be used to check
+  whether the current device and OS version support the API.</p>
+</li>
+<li>
+<p><a href="home.html#declared_age_range_request">declared_age_range_request</a> is asynchronous and always
+  returns its result through the callback.</p>
+</li>
+<li>
+<p><code>age_gate_1</code> is required and must be greater than or equal to <code>0</code>.</p>
+</li>
+<li>
+<p><code>age_gate_2</code> and <code>age_gate_3</code> are optional. Pass <code>-1</code> for either
+  value to omit that age gate.</p>
+</li>
+</ul>
+<p>Basic example of usage:</p>
+<pre class="highlight"><code class="language-gml">if (declared_age_range_is_supported())
+{
+    declared_age_range_request(13, 16, 18, function(result)
+    {
+        if (!result.success)
+        {
+            show_debug_message("DeclaredAgeRange failed: " + result.error);
+            return;
+        }
+
+        show_debug_message("Lower: " + string(result.age_lower));
+        show_debug_message("Upper: " + string(result.age_upper));
+        show_debug_message("Declaration: " + string(result.declaration));
+    });
+}
+else
+{
+    show_debug_message("DeclaredAgeRange requires iOS 26.2+");
+}</code></pre>
+<h2 id="functions">Functions</h2>
+<p>This module offers a collection of functions designed to address specific tasks and provide utilities for various purposes. Explore the available functions to make the most of the functionalities provided by this module.</p>
+<ul>
+<li><a href="home.html#declared_age_range_is_supported">declared_age_range_is_supported</a></li>
+<li><a href="home.html#declared_age_range_request">declared_age_range_request</a></li>
+</ul>
+<h2 id="structs">Structs</h2>
+<p>This module offers a collection of structs, which serve as custom data models for organizing and structuring data. Explore the provided structs to better understand the relationships between data elements and simplify your data manipulation tasks.</p>
+<ul>
+<li><a href="home.html#declaredagerangeresult">DeclaredAgeRangeResult</a></li>
+</ul>
+<h2 id="constants">Constants</h2>
+<p>This module includes a set of predefined constants that can be utilized for various purposes. Browse through the available constants to find values relevant to your needs and enhance the efficiency of your code.</p>
+<ul>
+<li><a href="home.html#declaredagerangedeclaration">DeclaredAgeRangeDeclaration</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="declared_age_range_is_supported">declared_age_range_is_supported</h1>
+<p>Returns whether the Declared Age Range API is supported on the current device. This currently requires iOS 26.2 or newer.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">declared_age_range_is_supported()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<pre class="highlight"><code class="language-gml">if (declared_age_range_is_supported())
+{
+    show_debug_message("DeclaredAgeRange is available");
+}
+else
+{
+    show_debug_message("DeclaredAgeRange is not available on this device");
+}</code></pre>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="declared_age_range_request">declared_age_range_request</h1>
+<p>Requests the user's age range using up to 3 age thresholds.</p>
+<blockquote>
+<p>This API may present Apple-controlled UI to the user.</p>
+</blockquote>
+<h3 id="system-ui">System UI</h3>
+<ul>
+<li>Call from a valid UI flow</li>
+<li>Do NOT call during startup splash</li>
+<li>Do NOT call while backgrounded</li>
+<li>Avoid unstable transitions</li>
+</ul>
+<hr />
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not repeatedly call this function.</p>
+</div>
+<h3 id="repeated-calls">Repeated Calls</h3>
+<ul>
+<li>Do NOT call every frame</li>
+<li>Do NOT call in Step events</li>
+<li>Cache results when possible</li>
+</ul>
+<hr />
+<blockquote>
+<p>Age range data is privacy-sensitive.</p>
+</blockquote>
+<h3 id="privacy">Privacy</h3>
+<ul>
+<li>Do not store unnecessarily</li>
+<li>Do not transmit unnecessarily</li>
+<li>Follow store policies and regulations</li>
+</ul>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The request may fail even when supported.</p>
+</div>
+<p>Possible reasons:
+- User declined sharing
+- Guardian declined sharing
+- No valid UI context
+- System/runtime error</p>
+<p>Always inspect <code>result.error</code>.</p>
+<hr />
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">declared_age_range_request(age_gate_1, age_gate_2, age_gate_3, callback)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>age_gate_1</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The primary age threshold (must be &gt;= 0). Defines the minimum boundary for age segmentation.</td>
+</tr>
+<tr>
+<td>age_gate_2</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>Secondary threshold used to further divide the age range. Must be greater than or equal to <code>age_gate_1</code>, or <code>-1</code> to omit.</td>
+</tr>
+<tr>
+<td>age_gate_3</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>Tertiary threshold for additional segmentation. Must be greater than or equal to <code>age_gate_2</code> (if provided), or <code>-1</code> to omit.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>Receives <a href="home.html#declaredagerangeresult">DeclaredAgeRangeResult</a></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>result</td>
+<td><a href="home.html#declaredagerangeresult">DeclaredAgeRangeResult</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<pre class="highlight"><code class="language-gml">declared_age_range_request(13, 16, 18, function(result)
+{
+    if (!result.success)
+    {
+        if (result.error != "")
+        {
+            show_debug_message("DeclaredAgeRange error: " + result.error);
+        }
+        else
+        {
+            show_debug_message("User declined to share an age range");
+        }
+        return;
+    }
+
+    show_debug_message("Age lower: " + string(result.age_lower));
+    show_debug_message("Age upper: " + string(result.age_upper));
+
+    switch (result.declaration)
+    {
+        case DeclaredAgeRangeDeclaration.SelfDeclared:
+            show_debug_message("Age range was self declared");
+        break;
+
+        case DeclaredAgeRangeDeclaration.GuardianDeclared:
+            show_debug_message("Age range was guardian declared");
+        break;
+
+        default:
+            show_debug_message("Declaration type: " + string(result.declaration));
+        break;
+    }
+});
+
+/// Example result (success):
+{
+    success: true,
+    age_lower: 13,
+    age_upper: 15,
+    declaration: DeclaredAgeRangeDeclaration.SelfDeclared,
+    error: ""
+}
+
+/// Example result (failure - unsupported OS):
+{
+    success: false,
+    age_lower: -1,
+    age_upper: -1,
+    declaration: DeclaredAgeRangeDeclaration.Unknown,
+    error: "DeclaredAgeRange requires iOS 26.2+."
+}</code></pre>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="declaredagerangedeclaration">DeclaredAgeRangeDeclaration</h1>
+<p>Describes how the reported age range was declared or checked.</p>
+<p>These constants are referenced by the following structs:</p>
+<ul>
+<li><a href="home.html#declaredagerangeresult">DeclaredAgeRangeResult</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unknown</code></td>
+<td>No declaration information is available.</td>
+</tr>
+<tr>
+<td><code>SelfDeclared</code></td>
+<td>The age range was declared by the user.</td>
+</tr>
+<tr>
+<td><code>GuardianDeclared</code></td>
+<td>The age range was declared by a guardian.</td>
+</tr>
+<tr>
+<td><code>CheckedByOtherMethod</code></td>
+<td>The age range was checked by another method.</td>
+</tr>
+<tr>
+<td><code>GuardianCheckedByOtherMethod</code></td>
+<td>The age range was guardian-checked by another method.</td>
+</tr>
+<tr>
+<td><code>GovernmentIDChecked</code></td>
+<td>The age range was checked using government ID.</td>
+</tr>
+<tr>
+<td><code>GuardianGovernmentIDChecked</code></td>
+<td>The age range was guardian-checked using government ID.</td>
+</tr>
+<tr>
+<td><code>PaymentChecked</code></td>
+<td>The age range was checked using a payment method.</td>
+</tr>
+<tr>
+<td><code>GuardianPaymentChecked</code></td>
+<td>The age range was guardian-checked using a payment method.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="declaredagerangeresult">DeclaredAgeRangeResult</h1>
+<p>Represents the result of a declared age range request.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The API returns an age range, not an exact age.</p>
+</div>
+<p>Example:
+- age_lower = 13
+- age_upper = 17</p>
+<p>This means the user is within that range.</p>
+<hr />
+<blockquote>
+<p><code>success == false</code> does NOT always mean an error.</p>
+</blockquote>
+<p>It may indicate:
+- User declined sharing
+- Guardian declined sharing
+- Unsupported device
+- Runtime/UI issue</p>
+<hr />
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Use <code>declaration</code> to estimate trust level in your logic.</p>
+</div>
+<p>Suggested interpretation:</p>
+<p>Lower trust:
+- SelfDeclared
+- GuardianDeclared</p>
+<p>Medium:
+- CheckedByOtherMethod
+- GuardianCheckedByOtherMethod</p>
+<p>Higher:
+- GovernmentIDChecked
+- GuardianGovernmentIDChecked
+- PaymentChecked
+- GuardianPaymentChecked</p>
+<hr />
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="home.html#declared_age_range_request">declared_age_range_request</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>True if request succeeded</td>
+</tr>
+<tr>
+<td>age_lower</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>Lower bound (-1 if unavailable)</td>
+</tr>
+<tr>
+<td>age_upper</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>Upper bound (-1 if unavailable)</td>
+</tr>
+<tr>
+<td>declaration</td>
+<td><a href="home.html#declaredagerangedeclaration">DeclaredAgeRangeDeclaration</a></td>
+<td>Verification method</td>
+</tr>
+<tr>
+<td>error</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Error message if failed</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2026</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-DeclaredAgeRange" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -5,7 +5,7 @@
     "releaseTemplate": "templates/release_body.md",
     "extensionMetaData": [
         {
-            "extensionFile": "source/DeclaredAgeRange_gml/extensions/DeclaredAgeRange/DeclaredAgeRange.yy",
+            "extensionFile": "source/DeclaredAgeRange_gml/extensions/GMDeclaredAgeRange/GMDeclaredAgeRange.yy",
             "packageId": "com.yoyogames.declaredagerange",
             "packageName": "DeclaredAgeRange Ext",
             "packageVersion": "0.0.1",
@@ -27,7 +27,9 @@
                 "**/Release/",
                 ".DS_Store",
                 "*.user",
-                "xcuserdata/"
+                "xcuserdata/",
+
+                "extensions/**/source/out/"
             ]
         }
     ],
