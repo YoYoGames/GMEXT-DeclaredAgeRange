@@ -74,7 +74,7 @@
 
 /**
  * @function declared_age_range_is_supported
- * @desc Returns whether the Declared Age Range API is supported on the current device. This currently requires iOS 26.2 or newer.
+ * @desc Returns whether the Declared Age Range API is supported on the current device.
  * @returns {Bool}
  * @example
  * ```gml
